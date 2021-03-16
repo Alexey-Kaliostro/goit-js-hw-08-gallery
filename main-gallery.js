@@ -4,6 +4,7 @@ import images from './gallery-items.js'
 
 // Получение DOM ссылки на <ul> галереи
 const galleryUlRef = document.querySelector('.js-gallery');
+const modalWindowRef = document.querySelector('div.js-lightbox');
 
 // создание разметки карточки изображения
 const imageCardMarkup = images.map(({ preview, original, description }) => {
@@ -19,7 +20,7 @@ const imageCardMarkup = images.map(({ preview, original, description }) => {
       data-source="${original}"
       alt="${description}"
     />
-  </a>
+</a>  
 </li>`
        
 });
@@ -28,4 +29,25 @@ const imageCardMarkup = images.map(({ preview, original, description }) => {
 galleryUlRef.insertAdjacentHTML('afterbegin', imageCardMarkup.join(''))
 
 // Реализация делегирования на галерее ul.js-gallery и получение url большого изображения.
+// Открытие модального окна
+const openModalWindow = (e) => {
+    e.preventDefault();
 
+    if (!e.target.classList.contains("gallery__image")) {
+        return;
+    } 
+      
+    openModalWIndow();
+    
+}
+
+const openModalWIndow = () => {
+    modalWindowRef.classList.add('is-open');
+}
+
+galleryUlRef.addEventListener('click', openModalWindow);
+
+
+/*
+
+*/
