@@ -2,11 +2,13 @@ import images from './gallery-items.js'
 
 //Создание и рендер разметки по массиву данных и предоставленному шаблону.
 
-// Получение DOM ссылки на <ul> галереи
+// Получение DOM ссылок на ключевые элементы
 const galleryUlRef = document.querySelector('.js-gallery');
 const modalWindowRef = document.querySelector('div.js-lightbox');
 const modalWindowImgRef = modalWindowRef.querySelector('img.lightbox__image');
-//modalWindowImgRef.src = 'https://cdn.pixabay.com/photo/2019/05/14/16/43/himilayan-blue-poppy-4202825__340.jpg'
+const closeModalWindowButtonRef = modalWindowRef.querySelector('button.lightbox__button');
+const overlayModalWindowRef = modalWindowRef.querySelector('div.lightbox__overlay');
+
 // создание разметки карточки изображения
 const imageCardMarkup = images.map(({ preview, original, description }) => {
     
@@ -30,7 +32,7 @@ const imageCardMarkup = images.map(({ preview, original, description }) => {
 galleryUlRef.insertAdjacentHTML('afterbegin', imageCardMarkup.join(''))
 
 // Реализация делегирования на галерее ul.js-gallery и получение url большого изображения.
-// Открытие модального окна
+
 const openModalWindow = (e) => {
     e.preventDefault();
 
@@ -38,13 +40,29 @@ const openModalWindow = (e) => {
         return;
     }
     
+ // Открытие модального окна по клику на элементе галереи.   
     modalWindowRef.classList.add('is-open');
 
-    console.log(e.target.dataset.source)
-    
+ // Подмена значения атрибута src и alt элемента img.lightbox__image.       
     modalWindowImgRef.setAttribute('src', e.target.dataset.source);
-     
+    modalWindowImgRef.setAttribute('alt', e.target.alt);
+    
 }
 
-galleryUlRef.addEventListener('click', openModalWindow);
+// Закрытие модального окна по клику на кнопку button[data-action="close-lightbox"] и при клике на overlay.
+const closeModalWindow = () => {
+    modalWindowRef.classList.remove('is-open');
 
+//Очистка значения атрибута src и alt элемента img.lightbox__image.
+    modalWindowImgRef.setAttribute('src', '');
+    modalWindowImgRef.setAttribute('alt', '');
+}
+
+
+// слушатели событий. 
+//Открытие модального окна по клику на изображение 
+galleryUlRef.addEventListener('click', openModalWindow);
+//Закрытие модального окна по клику на кнопку закрытия
+closeModalWindowButtonRef.addEventListener('click', closeModalWindow);
+// Закрытие модального окна поклику на overlay
+overlayModalWindowRef.addEventListener('click', closeModalWindow);
