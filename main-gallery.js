@@ -5,7 +5,8 @@ import images from './gallery-items.js'
 // Получение DOM ссылки на <ul> галереи
 const galleryUlRef = document.querySelector('.js-gallery');
 const modalWindowRef = document.querySelector('div.js-lightbox');
-
+const modalWindowImgRef = modalWindowRef.querySelector('img.lightbox__image');
+//modalWindowImgRef.src = 'https://cdn.pixabay.com/photo/2019/05/14/16/43/himilayan-blue-poppy-4202825__340.jpg'
 // создание разметки карточки изображения
 const imageCardMarkup = images.map(({ preview, original, description }) => {
     
@@ -35,19 +36,15 @@ const openModalWindow = (e) => {
 
     if (!e.target.classList.contains("gallery__image")) {
         return;
-    } 
-      
-    openModalWIndow();
+    }
     
-}
-
-const openModalWIndow = () => {
     modalWindowRef.classList.add('is-open');
+
+    console.log(e.target.dataset.source)
+    
+    modalWindowImgRef.setAttribute('src', e.target.dataset.source);
+     
 }
 
 galleryUlRef.addEventListener('click', openModalWindow);
 
-
-/*
-
-*/
